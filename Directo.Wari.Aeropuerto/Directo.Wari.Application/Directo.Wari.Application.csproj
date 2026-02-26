@@ -18,4 +18,9 @@
     <ProjectReference Include="..\Directo.Wari.Domain\Directo.Wari.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\SPServicios\Interfaces\" />
+    <Folder Include="Features\SPServicios\Cmd\" />
+  </ItemGroup>
+
 </Project>

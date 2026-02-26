@@ -54,7 +54,7 @@ namespace Directo.Wari.Infrastructure
 
             // Repositories
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-            services.AddScoped<ISqlServerRepository, SqlServerSPRepository>();
+            services.AddScoped<ISPParametrosRepository, SPParametrosRepository>();
 
 
             // Redis Cache

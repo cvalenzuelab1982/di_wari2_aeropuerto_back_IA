@@ -9,9 +9,9 @@ namespace Directo.Wari.Application.Features.SPParametros
 {
     public class SPParametrosQueryHandler : IRequestHandler<SPParametrosQuery, ParametroListaDto?>
     {
-        private readonly ISqlServerRepository _repository;
+        private readonly ISPParametrosRepository _repository;
 
-        public SPParametrosQueryHandler(ISqlServerRepository repository)
+        public SPParametrosQueryHandler(ISPParametrosRepository repository)
         {
             _repository = repository;
         }

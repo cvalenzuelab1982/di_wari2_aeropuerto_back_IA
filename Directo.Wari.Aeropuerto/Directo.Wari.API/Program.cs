@@ -35,11 +35,24 @@ builder.Services.AddApiVersioning(options =>
 {
     options.GroupNameFormat = "'v'VVV";
     options.SubstituteApiVersionInUrl = true;
+    options.AssumeDefaultVersionWhenUnspecified = true;
+
 });
 
 // ===== SWAGGER =====
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v2", new()
+    {
+        Title = "WariDirecto API",
+        Version = "v2"
+    });
+
+    options.CustomSchemaIds(type => type.FullName);
+    options.IgnoreObsoleteActions();
+    options.IgnoreObsoleteProperties();
+});
 
 // ===== CORS =====
 builder.Services.AddCors(options =>
@@ -55,7 +68,7 @@ builder.Services.AddCors(options =>
 
 // ===== HEALTH CHECKS =====
 builder.Services.AddHealthChecks()
-    .AddNpgSql(builder.Configuration.GetConnectionString("DefaultConnection")!)
+    .AddNpgSql(builder.Configuration.GetConnectionString("Postgres")!)
     .AddRedis(builder.Configuration.GetValue<string>("Redis:ConnectionString") ?? "localhost:6379");
 
 var app = builder.Build();
@@ -66,7 +79,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(options =>
     {
-        options.SwaggerEndpoint("/swagger/v1/swagger.json", "WariDirecto API V1");
+        options.SwaggerEndpoint("/swagger/v2/swagger.json", "WariDirecto API V2");
     });
 }
 

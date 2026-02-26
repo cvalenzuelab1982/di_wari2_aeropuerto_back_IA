@@ -21,7 +21,7 @@ namespace Directo.Wari.API.Controllers.V2
             _mediator = mediator;
         }
 
-        [HttpGet("ListarServiciosWari/{codigo:string}")]
+        [HttpGet("ListarServiciosWari/{codigo}")]
         public async Task<IActionResult> ListarServiciosWari(string codigo)
         {
             var result = await _mediator.Send(new SPParametrosQuery(codigo));

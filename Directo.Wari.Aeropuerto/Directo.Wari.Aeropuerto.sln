@@ -21,6 +21,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Directo.Wari.Infrastructure
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Directo.Wari.API", "Directo.Wari.API\Directo.Wari.API.csproj", "{57DDF2BA-5DF2-4333-873F-32A355F0085F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{47956FD8-EFB3-4E09-A06D-45AA059383AB}"
+	ProjectSection(SolutionItems) = preProject
+		Bitacora.txt = Bitacora.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
