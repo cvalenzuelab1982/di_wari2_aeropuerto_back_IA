@@ -1,13 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Directo.Wari.Application.Common.Interfaces;
+﻿using Directo.Wari.Application.Common.Interfaces;
+using Directo.Wari.Application.Features.SPParametrosLista.Interfaces;
 using Directo.Wari.Domain.Interfaces;
 using Directo.Wari.Infrastructure.Caching;
 using Directo.Wari.Infrastructure.Persistence;
 using Directo.Wari.Infrastructure.Persistence.Interceptors;
 using Directo.Wari.Infrastructure.Persistence.Repositories;
 using Directo.Wari.Infrastructure.Services;
+using Directo.Wari.Infrastructure.SqlServer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Directo.Wari.Infrastructure
 {
@@ -29,7 +31,7 @@ namespace Directo.Wari.Infrastructure
                 var interceptor = sp.GetRequiredService<AuditableEntityInterceptor>();
 
                 options.UseNpgsql(
-                        configuration.GetConnectionString("DefaultConnection"),
+                        configuration.GetConnectionString("Postgres"),
                         npgsqlOptions =>
                         {
                             npgsqlOptions.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName);
@@ -41,15 +43,20 @@ namespace Directo.Wari.Infrastructure
                     .AddInterceptors(interceptor);
             });
 
+            
+
             // Registrar DbContext interfaces
             services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<ApplicationDbContext>());
             services.AddScoped<IReadDbContext>(sp => sp.GetRequiredService<ApplicationDbContext>());
-
-            // Repositories
-            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped<SqlServerSPRepository>();
 
             // Unit of Work
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            // Repositories
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped<ISPParametrosQuery, SqlServerSPRepository>();
+
 
             // Redis Cache
             var redisConnectionString = configuration.GetValue<string>("Redis:ConnectionString");

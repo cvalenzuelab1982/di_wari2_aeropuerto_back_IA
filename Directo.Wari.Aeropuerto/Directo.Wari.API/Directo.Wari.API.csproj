@@ -23,8 +23,4 @@
     <ProjectReference Include="..\Directo.Wari.Infrastructure\Directo.Wari.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\V1\" />
-  </ItemGroup>
-
 </Project>

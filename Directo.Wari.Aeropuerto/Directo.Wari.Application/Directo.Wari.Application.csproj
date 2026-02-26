@@ -18,8 +18,4 @@
     <ProjectReference Include="..\Directo.Wari.Domain\Directo.Wari.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\" />
-  </ItemGroup>
-
 </Project>
