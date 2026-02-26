@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning;
-using Microsoft.AspNetCore.Authorization;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Directo.Wari.Application.Features.SPParametros;
 
 namespace Directo.Wari.API.Controllers.V2
 {
@@ -13,10 +14,17 @@ namespace Directo.Wari.API.Controllers.V2
     [Route("api/v{version:apiVersion}/[controller]")]
     public class ServicioAuthorizationController : ControllerBase
     {
+        private readonly IMediator _mediator;
 
-        [HttpPost("ListarServiciosWari")]
-        public async Task<IActionResult> ListarServiciosWari()
+        public ServicioAuthorizationController(IMediator mediator)
         {
+            _mediator = mediator;
+        }
+
+        [HttpGet("ListarServiciosWari/{codigo:string}")]
+        public async Task<IActionResult> ListarServiciosWari(string codigo)
+        {
+            var result = await _mediator.Send(new SPParametrosQuery(codigo));
             return Ok(new { message = "Endpoint pendiente de implementación" });
         }
     }

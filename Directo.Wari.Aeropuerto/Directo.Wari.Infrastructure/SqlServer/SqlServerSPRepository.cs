@@ -6,7 +6,7 @@ using System.Data;
 
 namespace Directo.Wari.Infrastructure.SqlServer
 {
-    public class SqlServerSPRepository : ISPParametrosQuery
+    public class SqlServerSPRepository : ISqlServerRepository
     {
         private readonly IConfiguration _configuration;
 
