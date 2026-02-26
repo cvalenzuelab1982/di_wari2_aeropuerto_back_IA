@@ -87,5 +87,5 @@ appsettings.*.local.json
 *.wmv
 
 # Archivos de configuracion
-appsettings.Development.json
 appsettings.json
+appsettings.Development.json
