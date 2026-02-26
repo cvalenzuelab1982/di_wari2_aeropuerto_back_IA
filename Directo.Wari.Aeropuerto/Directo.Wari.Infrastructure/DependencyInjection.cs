@@ -48,7 +48,6 @@ namespace Directo.Wari.Infrastructure
             // Registrar DbContext interfaces
             services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<ApplicationDbContext>());
             services.AddScoped<IReadDbContext>(sp => sp.GetRequiredService<ApplicationDbContext>());
-            services.AddScoped<SqlServerSPRepository>();
 
             // Unit of Work
             services.AddScoped<IUnitOfWork, UnitOfWork>();

@@ -43,8 +43,14 @@ namespace Directo.Wari.Infrastructure.SqlServer
                 return new ParametroListaDto
                 {
                     idParametro = reader.GetInt32(0),
-                    Nombre_Parametro = reader.GetString(1),
-                    valor_parametro = reader.GetInt32(2)
+                    Nombre_Parametro = 
+                        reader.IsDBNull(1)
+                        ? null
+                        : reader.GetString(1),
+                    valor_parametro =
+                        reader.IsDBNull(2)
+                        ? 0
+                        : reader.GetInt32(2)
                 };
             }
 

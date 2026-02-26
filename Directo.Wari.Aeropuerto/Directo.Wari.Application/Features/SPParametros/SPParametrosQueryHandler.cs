@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Directo.Wari.Application.Features.SPParametros
 {
-    public class SPParametrosQueryHandler : IRequestHandler<SPParametrosQuery?, ParametroListaDto>
+    public class SPParametrosQueryHandler : IRequestHandler<SPParametrosQuery, ParametroListaDto?>
     {
         private readonly ISqlServerRepository _repository;
 

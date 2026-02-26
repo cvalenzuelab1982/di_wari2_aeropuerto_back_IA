@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Directo.Wari.Application.Features.SPParametros
 {
-    public class SPParametrosQuery : IRequest<ParametroListaDto>
+    public class SPParametrosQuery : IRequest<ParametroListaDto?>
     {
         public string Codigo { get; set; }
 
