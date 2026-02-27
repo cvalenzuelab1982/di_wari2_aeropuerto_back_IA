@@ -1,5 +1,6 @@
 ﻿using Directo.Wari.Application.Common.Interfaces;
 using Directo.Wari.Application.Features.SPParametrosLista.Interfaces;
+using Directo.Wari.Application.Features.SPServicios.Interfaces;
 using Directo.Wari.Domain.Interfaces;
 using Directo.Wari.Infrastructure.Caching;
 using Directo.Wari.Infrastructure.Persistence;
@@ -55,6 +56,7 @@ namespace Directo.Wari.Infrastructure
             // Repositories
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<ISPParametrosRepository, SPParametrosRepository>();
+            services.AddScoped<ISPServiciosRepository, SPServiciosRepository>();
 
 
             // Redis Cache

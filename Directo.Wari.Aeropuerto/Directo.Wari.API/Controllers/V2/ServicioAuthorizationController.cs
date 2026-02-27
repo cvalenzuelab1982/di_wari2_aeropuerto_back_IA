@@ -1,7 +1,9 @@
 ﻿using Asp.Versioning;
+using Directo.Wari.Application.Features.SPParametros;
+using Directo.Wari.Application.Features.SPServicios.Dtos;
+using Directo.Wari.Application.Features.SPServicios.Queries.ListarServicios;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Directo.Wari.Application.Features.SPParametros;
 
 namespace Directo.Wari.API.Controllers.V2
 {
@@ -21,11 +23,11 @@ namespace Directo.Wari.API.Controllers.V2
             _mediator = mediator;
         }
 
-        [HttpGet("ListarServiciosWari/{codigo}")]
-        public async Task<IActionResult> ListarServiciosWari(string codigo)
+        [HttpPost("ListarServiciosWari")]
+        public async Task<IActionResult> ListarServiciosWari([FromBody] RequestServicioWariDto request)
         {
-            var result = await _mediator.Send(new SPParametrosQuery(codigo));
-            return Ok(new { message = "Endpoint pendiente de implementación" });
+            var result = await _mediator.Send(new ListarServiciosQuery(request));
+            return Ok(result);
         }
     }
 }

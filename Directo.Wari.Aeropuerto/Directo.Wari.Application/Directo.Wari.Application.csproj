@@ -19,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\SPServicios\Interfaces\" />
     <Folder Include="Features\SPServicios\Cmd\" />
   </ItemGroup>
 
