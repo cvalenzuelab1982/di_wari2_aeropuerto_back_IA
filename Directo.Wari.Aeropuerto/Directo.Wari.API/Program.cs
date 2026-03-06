@@ -19,7 +19,12 @@ builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
 // ===== CONTROLLERS =====
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    //PERMITIR EL USO DE PASCALCASE MENO IMPACTO PARA EL FRONT ACTUAL
+    .AddJsonOptions(option =>
+    {
+        option.JsonSerializerOptions.PropertyNamingPolicy = null;
+    });
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
@@ -68,7 +73,7 @@ builder.Services.AddCors(options =>
 
 // ===== HEALTH CHECKS =====
 builder.Services.AddHealthChecks()
-    .AddNpgSql(builder.Configuration.GetConnectionString("Postgres")!)
+    .AddNpgSql(builder.Configuration.GetConnectionString("DefaultConnection")!)
     .AddRedis(builder.Configuration.GetValue<string>("Redis:ConnectionString") ?? "localhost:6379");
 
 var app = builder.Build();

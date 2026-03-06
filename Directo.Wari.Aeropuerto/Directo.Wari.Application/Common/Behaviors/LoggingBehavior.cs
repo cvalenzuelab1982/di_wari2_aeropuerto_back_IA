@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
+using System.Collections;
 
 namespace Directo.Wari.Application.Common.Behaviors
 {
@@ -29,9 +30,21 @@ namespace Directo.Wari.Application.Common.Behaviors
 
             var response = await next();
 
-            _logger.LogInformation(
-                "WariDirecto Response: {Name} {@Response}",
-                requestName, response);
+            //En caso de traer una JSON lista, evita la demora en la escritura de los logs y solo indica la cantidad de registros
+            if (response is ICollection collection)
+            {
+                _logger.LogInformation(
+                    "WariDirecto Response: {Name} Count: {Count}", 
+                    requestName, 
+                    collection.Count);
+            }
+            else
+            {
+                _logger.LogInformation(
+                    "WariDirecto Response: {Name} {@Response}",
+                    requestName, response);
+            }
+
 
             return response;
         }

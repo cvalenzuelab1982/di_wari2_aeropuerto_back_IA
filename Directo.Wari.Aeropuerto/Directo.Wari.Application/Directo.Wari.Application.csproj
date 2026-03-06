@@ -19,7 +19,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\SPServicios\Cmd\" />
+    <Folder Include="Features\CentroCostoAuthorization\Cmd\" />
+    <Folder Include="Features\ClienteAuthorization\Cmd\" />
+    <Folder Include="Features\ClienteAuthorization\Dtos\" />
+    <Folder Include="Features\Cliente\Cmd\" />
+    <Folder Include="Features\EmpresaAuthorization\Cmd\" />
+    <Folder Include="Features\GenericaAuthorization\Cmd\" />
+    <Folder Include="Features\ParametroAuthorization\Cmd\" />
+    <Folder Include="Features\PromocionAuthorization\Cmd\" />
+    <Folder Include="Features\ServicioAuthorization\Cmd\" />
+    <Folder Include="Features\Servicio\Cmd\" />
   </ItemGroup>
 
 </Project>

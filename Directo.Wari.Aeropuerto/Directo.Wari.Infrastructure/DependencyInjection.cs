@@ -1,6 +1,13 @@
 ﻿using Directo.Wari.Application.Common.Interfaces;
-using Directo.Wari.Application.Features.SPParametrosLista.Interfaces;
-using Directo.Wari.Application.Features.SPServicios.Interfaces;
+using Directo.Wari.Application.Features.CentroCostoAuthorization.Interfaces;
+using Directo.Wari.Application.Features.Cliente.Interfaces;
+using Directo.Wari.Application.Features.ClienteAuthorization.Interfaces;
+using Directo.Wari.Application.Features.EmpresaAuthorization.Interfaces;
+using Directo.Wari.Application.Features.GenericaAuthorization.Interface;
+using Directo.Wari.Application.Features.Parametro.Interfaces;
+using Directo.Wari.Application.Features.PromocionAuthorization.Interfaces;
+using Directo.Wari.Application.Features.Servicio.Interfaces;
+using Directo.Wari.Application.Features.ServicioAuthorization.Interfaces;
 using Directo.Wari.Domain.Interfaces;
 using Directo.Wari.Infrastructure.Caching;
 using Directo.Wari.Infrastructure.Persistence;
@@ -32,7 +39,7 @@ namespace Directo.Wari.Infrastructure
                 var interceptor = sp.GetRequiredService<AuditableEntityInterceptor>();
 
                 options.UseNpgsql(
-                        configuration.GetConnectionString("Postgres"),
+                        configuration.GetConnectionString("DefaultConnection"),
                         npgsqlOptions =>
                         {
                             npgsqlOptions.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName);
@@ -55,9 +62,17 @@ namespace Directo.Wari.Infrastructure
 
             // Repositories
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-            services.AddScoped<ISPParametrosRepository, SPParametrosRepository>();
-            services.AddScoped<ISPServiciosRepository, SPServiciosRepository>();
-
+            
+            // Repositories consulta a solo SP
+            services.AddScoped<IParametroAuthorizationRepository, ParametroAuthorizationRepository>();
+            services.AddScoped<IServicioAuthorizationRepository, ServicioAuthorizationRepository>();
+            services.AddScoped<IClienteRepository, ClienteRepository>();
+            services.AddScoped<IGenericaAuthorizationRepository, GenericaAuthorizationRepository>();
+            services.AddScoped<IEmpresaAuthorizationRepository, EmpresaAuthorizationRepository>();
+            services.AddScoped<ICentroCostoAuthorizationRepository, CentroCostoAuthorizationRepository>();
+            services.AddScoped<IServicioRepository, ServicioRepository>();
+            services.AddScoped<IClienteAuthorizationRepository, ClienteAuthorizationRepository>();
+            services.AddScoped<IPromocionAuthorizationRepository, PromocionAuthorizationRepository>();
 
             // Redis Cache
             var redisConnectionString = configuration.GetValue<string>("Redis:ConnectionString");

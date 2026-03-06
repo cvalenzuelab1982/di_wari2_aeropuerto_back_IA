@@ -26,6 +26,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{47956FD8-EFB
 		Bitacora.txt = Bitacora.txt
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Directo.Wari.Infrastructure.Legacy", "Directo.Wari.Infrastructure.Legacy\Directo.Wari.Infrastructure.Legacy.csproj", "{199EE8C8-A7D8-491F-BF71-2D9B5F787150}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,6 +50,10 @@ Global
 		{57DDF2BA-5DF2-4333-873F-32A355F0085F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57DDF2BA-5DF2-4333-873F-32A355F0085F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57DDF2BA-5DF2-4333-873F-32A355F0085F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{199EE8C8-A7D8-491F-BF71-2D9B5F787150}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{199EE8C8-A7D8-491F-BF71-2D9B5F787150}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{199EE8C8-A7D8-491F-BF71-2D9B5F787150}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{199EE8C8-A7D8-491F-BF71-2D9B5F787150}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,6 +66,7 @@ Global
 		{93138BA6-F711-46B1-82F7-5C258E460B38} = {6A6F1024-9B72-49F8-8EDB-4B7F6915E5CB}
 		{ABE1E269-5021-4633-AA37-57EB82E1F708} = {E0B52C2F-BAF2-4031-B7AE-F1ED654DBBD4}
 		{57DDF2BA-5DF2-4333-873F-32A355F0085F} = {C3FFDDB0-612B-4A3C-9E0C-DE52EE96D1FA}
+		{199EE8C8-A7D8-491F-BF71-2D9B5F787150} = {E0B52C2F-BAF2-4031-B7AE-F1ED654DBBD4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {53CD02C6-D537-42E0-A408-EB40859CCB3C}
