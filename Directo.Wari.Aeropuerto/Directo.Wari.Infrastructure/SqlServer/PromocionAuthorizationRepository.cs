@@ -2,24 +2,20 @@
 using Directo.Wari.Application.Features.PromocionAuthorization.Interfaces;
 using Directo.Wari.Infrastructure.Persistence.Constants;
 using Directo.Wari.Infrastructure.Persistence.Helpers;
+using Directo.Wari.Infrastructure.SqlServer.Base;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System.Data;
 
 namespace Directo.Wari.Infrastructure.SqlServer
 {
-    public class PromocionAuthorizationRepository : IPromocionAuthorizationRepository
+    public class PromocionAuthorizationRepository : SqlServerRepositoryBase, IPromocionAuthorizationRepository
     {
-        private readonly string _connectionString;
-
-        public PromocionAuthorizationRepository(IConfiguration configuration)
-        {
-            _connectionString = configuration.GetConnectionString("SqlServer")!;
-        }
+        public PromocionAuthorizationRepository(IConfiguration configuration) : base(configuration) { }
 
         public async Task<PromocionResponseDto?> ObtenerPromocionesPorCliente(int idEmpresa, int idCliente)
         {
-            await using var connection = new SqlConnection(_connectionString);
+            await using var connection = CreateConnection();
             await using var command = connection.CreateCommand();
             command.CommandText = SPName.Promocion.API_WEB_WARI_PROMOCIONES_POR_CLIENTE;
             command.CommandType = CommandType.StoredProcedure;

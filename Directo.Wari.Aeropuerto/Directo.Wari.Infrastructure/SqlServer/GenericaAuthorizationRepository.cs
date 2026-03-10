@@ -3,25 +3,21 @@ using Directo.Wari.Application.Features.GenericaAuthorization.Dto;
 using Directo.Wari.Application.Features.GenericaAuthorization.Interface;
 using Directo.Wari.Infrastructure.Persistence.Constants;
 using Directo.Wari.Infrastructure.Persistence.Helpers;
+using Directo.Wari.Infrastructure.SqlServer.Base;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System.Data;
 
 namespace Directo.Wari.Infrastructure.SqlServer
 {
-    public class GenericaAuthorizationRepository : IGenericaAuthorizationRepository
+    public class GenericaAuthorizationRepository : SqlServerRepositoryBase, IGenericaAuthorizationRepository
     {
-        private readonly string _connectionString;
-
-        public GenericaAuthorizationRepository(IConfiguration configuration)
-        {
-            _connectionString = configuration.GetConnectionString("SqlServer")!;
-        }
+        public GenericaAuthorizationRepository(IConfiguration configuration) : base(configuration) { }
 
         public async Task<List<GenericaResponseDto>> Get(GetRequestDto request, ClienteResponseDto? cliente)
         {
             var lista = new List<GenericaResponseDto>();
-            await using var connection = new SqlConnection(_connectionString);
+            await using var connection = CreateConnection();
             await using var command = connection.CreateCommand();
             command.CommandType = CommandType.StoredProcedure;
             command.CommandTimeout = 120;

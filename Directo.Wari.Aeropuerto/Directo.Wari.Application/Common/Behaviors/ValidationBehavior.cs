@@ -40,9 +40,16 @@ namespace Directo.Wari.Application.Common.Behaviors
             if (failures.Count != 0)
             {
                 var errorMessages = string.Join("; ", failures.Select(f => f.ErrorMessage));
-                // Creamos un Result de error usando reflection para manejar tipos genéricos
                 var error = Error.Validation(errorMessages);
-                return (TResponse)(object)Result.Failure(error);
+
+                var genericType = typeof(TResponse).GenericTypeArguments[0];
+
+                var method = typeof(Result)
+                  .GetMethods()
+                  .First(m => m.Name == nameof(Result.Failure) && m.IsGenericMethod)
+                  .MakeGenericMethod(genericType);
+
+                return (TResponse)method.Invoke(null, new object[] { error })!;
             }
 
             return await next();

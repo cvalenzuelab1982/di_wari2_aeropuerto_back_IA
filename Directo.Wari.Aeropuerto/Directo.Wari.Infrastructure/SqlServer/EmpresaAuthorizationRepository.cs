@@ -3,25 +3,21 @@ using Directo.Wari.Application.Features.EmpresaAuthorization.Dtos;
 using Directo.Wari.Application.Features.EmpresaAuthorization.Interfaces;
 using Directo.Wari.Infrastructure.Persistence.Constants;
 using Directo.Wari.Infrastructure.Persistence.Helpers;
+using Directo.Wari.Infrastructure.SqlServer.Base;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System.Data;
 
 namespace Directo.Wari.Infrastructure.SqlServer
 {
-    public class EmpresaAuthorizationRepository : IEmpresaAuthorizationRepository
+    public class EmpresaAuthorizationRepository : SqlServerRepositoryBase, IEmpresaAuthorizationRepository
     {
-        private readonly string _connectionString;
-
-        public EmpresaAuthorizationRepository(IConfiguration configuration)
-        {
-            _connectionString = configuration.GetConnectionString("SqlServer")!;
-        }
+        public EmpresaAuthorizationRepository(IConfiguration configuration) : base(configuration) { }
 
         public async Task<List<EmpresaResponseSimpleDto>> All(ClienteResponseDto? cliente)
         {
             var lista = new List<EmpresaResponseSimpleDto>();
-            await using var connection = new SqlConnection(_connectionString);
+            await using var connection = CreateConnection();
             await using var command = connection.CreateCommand();
             command.CommandType = CommandType.StoredProcedure;
             command.CommandTimeout = 120;
@@ -50,7 +46,7 @@ namespace Directo.Wari.Infrastructure.SqlServer
 
         public async Task<EmpresaResponseInformativoDto?> Get(int id)
         {
-            await using var connection = new SqlConnection(_connectionString);
+            await using var connection = CreateConnection();
             await using var command = connection.CreateCommand();
             command.CommandText = SPName.EmpresaAuthorization.EMPRESA_ID;
             command.CommandType = CommandType.StoredProcedure;

@@ -50,7 +50,7 @@ builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v2", new()
     {
-        Title = "WariDirecto API",
+        Title = "WariDirecto-Modulo-Aeropuerto API",
         Version = "v2"
     });
 

@@ -1,34 +1,29 @@
 ﻿using Directo.Wari.Application.Common.Models;
-using Directo.Wari.Application.Features.EmpresaAuthorization.Dtos;
 using Directo.Wari.Application.Features.ServicioAuthorization.Dtos;
 using Directo.Wari.Application.Features.ServicioAuthorization.Interfaces;
 using Directo.Wari.Infrastructure.Persistence.Constants;
 using Directo.Wari.Infrastructure.Persistence.Helpers;
+using Directo.Wari.Infrastructure.SqlServer.Base;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System.Data;
 
 namespace Directo.Wari.Infrastructure.SqlServer
 {
-    public class ServicioAuthorizationRepository : IServicioAuthorizationRepository
+    public class ServicioAuthorizationRepository : SqlServerRepositoryBase, IServicioAuthorizationRepository
     {
-        private readonly string _connectionString;
-
-        public ServicioAuthorizationRepository(IConfiguration configuration)
-        {
-            _connectionString = configuration.GetConnectionString("SqlServer")!;
-        }
+        public ServicioAuthorizationRepository(IConfiguration configuration) : base(configuration) { }
 
         public async Task<PaginatedList<ServicioWariResponseDto>> ListarServicios(ServicioWariRequestDto request)
         {
             var lista = new List<ServicioWariResponseDto>();
-            await using var connection = new SqlConnection(_connectionString);
+            await using var connection = CreateConnection();
             await using var command = connection.CreateCommand();
             command.CommandText = SPName.ServicioAuthorization.LISTAR_SERVICIOS_WARI;
             command.CommandType = CommandType.StoredProcedure;
             command.CommandTimeout = 120;
 
-            SqlParameterHelper.AddParameter(command, "@Tipo", SqlDbType.Int,request.Tipo);
+            SqlParameterHelper.AddParameter(command, "@Tipo", SqlDbType.Int, request.Tipo);
             SqlParameterHelper.AddParameter(command, "@Usuario", SqlDbType.VarChar, request.Usuario);
             SqlParameterHelper.AddParameter(command, "@Compania", SqlDbType.Int, request.Compania);
             SqlParameterHelper.AddParameter(command, "@SubCompania", SqlDbType.VarChar, request.SubCompania);
@@ -66,7 +61,7 @@ namespace Directo.Wari.Infrastructure.SqlServer
         public async Task<List<ServicioWariResponseDto>> FiltroBusquedaServicio(FiltroBusquedaServicioRequestDto request)
         {
             var lista = new List<ServicioWariResponseDto>();
-            await using var connection = new SqlConnection(_connectionString);
+            await using var connection = CreateConnection();
             await using var command = connection.CreateCommand();
             command.CommandText = SPName.ServicioAuthorization.LISTAR_SERVICIOS_FILTRO_WARI;
             command.CommandType = CommandType.StoredProcedure;
@@ -89,8 +84,8 @@ namespace Directo.Wari.Infrastructure.SqlServer
         public async Task<ServicioFullWariResponseDto?> ObtenerServicio(int IdServicio)
         {
             ServicioFullWariResponseDto? servicio = null;
-            
-            await using var connection = new SqlConnection(_connectionString);
+
+            await using var connection = CreateConnection();
             await using var command = connection.CreateCommand();
             command.CommandText = SPName.ServicioAuthorization.OBTENER_SERVICIOS_WARI;
             command.CommandType = CommandType.StoredProcedure;
@@ -144,7 +139,7 @@ namespace Directo.Wari.Infrastructure.SqlServer
         public async Task<List<HistorialServicioWariResponseDto>> ObtenerServicioByIdCliente(int Idcliente)
         {
             var lista = new List<HistorialServicioWariResponseDto>();
-            await using var connection = new SqlConnection(_connectionString);
+            await using var connection = CreateConnection();
             await using var command = connection.CreateCommand();
             command.CommandText = SPName.ServicioAuthorization.ServicioByCliente;
             command.CommandType = CommandType.StoredProcedure;

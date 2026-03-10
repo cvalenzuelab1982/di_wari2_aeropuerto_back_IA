@@ -1,4 +1,5 @@
 ﻿using Directo.Wari.Application.Common.Interfaces;
+using Directo.Wari.Infrastructure.Persistence.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Directo.Wari.Infrastructure.Persistence
@@ -14,6 +15,7 @@ namespace Directo.Wari.Infrastructure.Persistence
         //public DbSet<Destino> Destinos => Set<Destino>();
         //public DbSet<Cliente> Clientes => Set<Cliente>();
         //public DbSet<Conductor> Conductores => Set<Conductor>();
+        public DbSet<OutboxMessage> OutboxMessages => Set<OutboxMessage>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -45,6 +47,25 @@ namespace Directo.Wari.Infrastructure.Persistence
                 foreach (var index in entity.GetIndexes())
                 {
                     index.SetDatabaseName(ToSnakeCase(index.GetDatabaseName()!));
+                }
+            }
+
+            // Fix: Owned entities comparten la PK con su owner.
+            // Después de snake_case, la shadow key del owned (ej: DestinoId → destino_id)
+            // debe coincidir con la columna del owner (Id → id).
+            foreach (var entity in modelBuilder.Model.GetEntityTypes())
+            {
+                if (!entity.IsOwned()) continue;
+
+                var ownershipFk = entity.GetForeignKeys()
+                    .FirstOrDefault(fk => fk.IsOwnership);
+
+                if (ownershipFk is null) continue;
+
+                for (var i = 0; i < ownershipFk.Properties.Count; i++)
+                {
+                    var principalColumn = ownershipFk.PrincipalKey.Properties[i].GetColumnName();
+                    ownershipFk.Properties[i].SetColumnName(principalColumn);
                 }
             }
         }

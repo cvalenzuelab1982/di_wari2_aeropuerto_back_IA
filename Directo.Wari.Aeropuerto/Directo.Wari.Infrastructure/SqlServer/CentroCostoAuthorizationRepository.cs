@@ -1,27 +1,22 @@
 ﻿using Directo.Wari.Application.Features.CentroCostoAuthorization.Dtos;
 using Directo.Wari.Application.Features.CentroCostoAuthorization.Interfaces;
-using Directo.Wari.Application.Features.EmpresaAuthorization.Dtos;
 using Directo.Wari.Infrastructure.Persistence.Constants;
 using Directo.Wari.Infrastructure.Persistence.Helpers;
+using Directo.Wari.Infrastructure.SqlServer.Base;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System.Data;
 
 namespace Directo.Wari.Infrastructure.SqlServer
 {
-    public class CentroCostoAuthorizationRepository : ICentroCostoAuthorizationRepository
+    public class CentroCostoAuthorizationRepository : SqlServerRepositoryBase, ICentroCostoAuthorizationRepository
     {
-        private readonly string _connectionString;
-
-        public CentroCostoAuthorizationRepository(IConfiguration configuration)
-        {
-            _connectionString = configuration.GetConnectionString("SqlServer")!;
-        }
+        public CentroCostoAuthorizationRepository(IConfiguration configuration) : base(configuration) { }
 
         public async Task<List<CentroCostoResponseDto>> WhereEmpresa(int id)
         {
             var lista = new List<CentroCostoResponseDto>();
-            await using var connection = new SqlConnection(_connectionString);
+            await using var connection = CreateConnection();
             await using var command = connection.CreateCommand();
             command.CommandText = SPName.CentroCostoAuthorization.CENTROCOSTO_EMPRESA;
             command.CommandType = CommandType.StoredProcedure;
@@ -43,7 +38,7 @@ namespace Directo.Wari.Infrastructure.SqlServer
         {
             return new CentroCostoResponseDto
             {
-                IdCentroCosto = reader.GetNullableInt("IdCentroCosto"),  
+                IdCentroCosto = reader.GetNullableInt("IdCentroCosto"),
                 IdEmpresa = reader.GetNullableInt("IdEmpresa"),
                 Codigo = reader.GetNullableString("Codigo"),
                 CodigoArea = reader.GetNullableString("CodigoArea"),

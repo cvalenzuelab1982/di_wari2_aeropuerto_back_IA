@@ -1,26 +1,21 @@
-﻿using Directo.Wari.Application.Features.CentroCostoAuthorization.Dtos;
-using Directo.Wari.Application.Features.Cliente.Dtos;
+﻿using Directo.Wari.Application.Features.Cliente.Dtos;
 using Directo.Wari.Application.Features.Cliente.Interfaces;
 using Directo.Wari.Infrastructure.Persistence.Constants;
 using Directo.Wari.Infrastructure.Persistence.Helpers;
+using Directo.Wari.Infrastructure.SqlServer.Base;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System.Data;
 
 namespace Directo.Wari.Infrastructure.SqlServer
 {
-    public class ClienteRepository : IClienteRepository
+    public class ClienteRepository : SqlServerRepositoryBase, IClienteRepository
     {
-        private readonly string _connectionString;
-
-        public ClienteRepository(IConfiguration configuration)
-        {
-            _connectionString = configuration.GetConnectionString("SqlServer")!;
-        }
+        public ClienteRepository(IConfiguration configuration) : base(configuration) { }
 
         public async Task<ClienteResponseDto?> Where(int id)
         {
-            await using var connection = new SqlConnection(_connectionString);
+            await using var connection = CreateConnection();
             await using var command = connection.CreateCommand();
             command.CommandText = SPName.Cliente.CLIENTE_ID;
             command.CommandType = CommandType.StoredProcedure;
@@ -43,7 +38,7 @@ namespace Directo.Wari.Infrastructure.SqlServer
         public async Task<List<BeanRutinaResponseDto>> ObtenerRutina(int idcliente, int idEmpresa)
         {
             var lista = new List<BeanRutinaResponseDto>();
-            await using var connection = new SqlConnection(_connectionString);
+            await using var connection = CreateConnection();
             await using var command = connection.CreateCommand();
             command.CommandText = SPName.Cliente.RUTINA_CLIENTE_WEB_WARI;
             command.CommandType = CommandType.StoredProcedure;

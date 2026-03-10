@@ -29,6 +29,8 @@
     <Folder Include="Features\PromocionAuthorization\Cmd\" />
     <Folder Include="Features\ServicioAuthorization\Cmd\" />
     <Folder Include="Features\Servicio\Cmd\" />
+    <Folder Include="Features\TarifaAuthorization\Cmd\" />
+    <Folder Include="Features\TarifaAuthorization\Interfaces\" />
   </ItemGroup>
 
 </Project>

@@ -1,27 +1,22 @@
-﻿using Directo.Wari.Application.Features.CentroCostoAuthorization.Dtos;
-using Directo.Wari.Application.Features.Servicio.Dtos;
+﻿using Directo.Wari.Application.Features.Servicio.Dtos;
 using Directo.Wari.Application.Features.Servicio.Interfaces;
 using Directo.Wari.Infrastructure.Persistence.Constants;
 using Directo.Wari.Infrastructure.Persistence.Helpers;
+using Directo.Wari.Infrastructure.SqlServer.Base;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System.Data;
 
 namespace Directo.Wari.Infrastructure.SqlServer
 {
-    public class ServicioRepository : IServicioRepository
+    public class ServicioRepository : SqlServerRepositoryBase, IServicioRepository
     {
-        private readonly string _connectionString;
-
-        public ServicioRepository(IConfiguration configuration)
-        {
-            _connectionString = configuration.GetConnectionString("LegacyConnection")!;
-        }
+        public ServicioRepository(IConfiguration configuration) : base(configuration) { }
 
         public async Task<List<BeanAuditoriaWariResponseDto>> GetAuditoriaServicio(int IdServicio)
         {
             var lista = new List<BeanAuditoriaWariResponseDto>();
-            await using var connection = new SqlConnection(_connectionString);
+            await using var connection = CreateConnection();
             await using var command = connection.CreateCommand();
             command.CommandText = SPName.Servicio.AUDITORIA_SERVICIOS_WEB_WARI;
             command.CommandType = CommandType.StoredProcedure;

@@ -3,25 +3,21 @@ using Directo.Wari.Application.Features.Cliente.Dtos;
 using Directo.Wari.Application.Features.ClienteAuthorization.Interfaces;
 using Directo.Wari.Infrastructure.Persistence.Constants;
 using Directo.Wari.Infrastructure.Persistence.Helpers;
+using Directo.Wari.Infrastructure.SqlServer.Base;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System.Data;
 
 namespace Directo.Wari.Infrastructure.SqlServer
 {
-    public class ClienteAuthorizationRepository : IClienteAuthorizationRepository
+    public class ClienteAuthorizationRepository : SqlServerRepositoryBase, IClienteAuthorizationRepository
     {
-        private readonly string _connectionString;
-
-        public ClienteAuthorizationRepository(IConfiguration configuration)
-        {
-            _connectionString = configuration.GetConnectionString("SqlServer")!;
-        }
+        public ClienteAuthorizationRepository(IConfiguration configuration) : base(configuration) { }
 
         public async Task<List<ClienteResponseDto>> SearchByTelefono(string telefono)
         {
             var lista = new List<ClienteResponseDto>();
-            await using var connection = new SqlConnection(_connectionString);
+            await using var connection = CreateConnection();
             await using var command = connection.CreateCommand();
             command.CommandText = SPName.ClienteAuthorization.CLIENTES_TELEFONO;
             command.CommandType = CommandType.StoredProcedure;
@@ -42,7 +38,7 @@ namespace Directo.Wari.Infrastructure.SqlServer
         public async Task<List<ClienteResponseDto>> GetClienteEmpresa(int idEmpresa, string query)
         {
             var lista = new List<ClienteResponseDto>();
-            await using var connection = new SqlConnection(_connectionString);
+            await using var connection = CreateConnection();
             await using var command = connection.CreateCommand();
             command.CommandText = SPName.ClienteAuthorization.CLIENTE_EMPRESA_QUERY;
             command.CommandType = CommandType.StoredProcedure;
@@ -62,7 +58,7 @@ namespace Directo.Wari.Infrastructure.SqlServer
         }
         public async Task<BeanGeneric?> GetComprobantePredeterminadoCliente(int IdCliente)
         {
-            await using var connection = new SqlConnection(_connectionString);
+            await using var connection = CreateConnection();
             await using var command = connection.CreateCommand();
             command.CommandText = SPName.ClienteAuthorization.GET_CONFIGURACION_PREDET_COMPROBANTE_CLIENTE;
             command.CommandType = CommandType.StoredProcedure;
